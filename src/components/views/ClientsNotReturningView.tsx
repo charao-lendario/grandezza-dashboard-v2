@@ -53,22 +53,20 @@ function Section({ title, contracts }: { title: string; contracts: Contract[] })
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 uppercase">
-                <th className="px-5 py-2">Cliente</th>
+                <th className="px-5 py-2">Imobiliária / Corretor</th>
                 <th className="px-5 py-2">Contrato</th>
                 <th className="px-5 py-2">Data</th>
                 <th className="px-5 py-2">Empreendimento</th>
-                <th className="px-5 py-2">Corretor</th>
                 <th className="px-5 py-2 text-right">Valor</th>
               </tr>
             </thead>
             <tbody>
               {contracts.map(c => (
                 <tr key={c.id} className="border-t border-navy-700 hover:bg-navy-700/50 transition-colors">
-                  <td className="px-5 py-2.5 text-white">{c.clientName}</td>
+                  <td className="px-5 py-2.5 text-white">{c.broker || 'Direta'}</td>
                   <td className="px-5 py-2.5 text-gray-400">{c.contractNumber}</td>
                   <td className="px-5 py-2.5 text-gray-400">{formatDate(c.date)}</td>
                   <td className="px-5 py-2.5 text-gray-400">{c.empreendimento}</td>
-                  <td className="px-5 py-2.5 text-gray-400">{c.broker || 'Direta'}</td>
                   <td className="px-5 py-2.5 text-right text-coral">{formatCurrency(c.totalValue)}</td>
                 </tr>
               ))}
