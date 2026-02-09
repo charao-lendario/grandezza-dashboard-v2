@@ -1,6 +1,6 @@
-import { FileText, DollarSign, Target, Ruler } from 'lucide-react';
+import { FileText, DollarSign, Target, ShoppingCart } from 'lucide-react';
 import { StatCard } from './StatCard';
-import { formatCurrency, formatNumber, formatPercent, formatArea } from '../../utils/formatters';
+import { formatCurrency, formatPercent } from '../../utils/formatters';
 import type { DashboardStats } from '../../types';
 
 interface StatCardGridProps {
@@ -32,10 +32,10 @@ export function StatCardGrid({ stats }: StatCardGridProps) {
         color="text-teal"
       />
       <StatCard
-        title="Área Total"
-        value={formatArea(stats.totalArea)}
-        subtitle={`R$/m² médio: ${formatNumber(stats.avgPricePerM2)}`}
-        icon={Ruler}
+        title="Total de Vendas"
+        value={formatCurrency(stats.totalValue)}
+        subtitle={`${Object.entries(stats.valueByYear).sort(([a], [b]) => Number(a) - Number(b)).map(([y, v]) => `${y}: ${formatCurrency(v)}`).join(' | ')}`}
+        icon={ShoppingCart}
         color="text-amber"
       />
     </div>
