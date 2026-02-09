@@ -47,6 +47,7 @@ export interface DashboardStats {
   avgPricePerM2: number;
   contractsByYear: Record<number, number>;
   valueByYear: Record<number, number>;
+  salesByBroker: { broker: string; count: number; value: number }[];
   monthlyTrend: { month: number; year: number; count: number; value: number }[];
 }
 

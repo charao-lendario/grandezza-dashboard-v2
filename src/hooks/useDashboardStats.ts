@@ -22,6 +22,17 @@ export function useDashboardStats(contracts: Contract[]): DashboardStats {
       ? withArea.reduce((s, c) => s + c.totalValue, 0) / withArea.reduce((s, c) => s + c.area, 0)
       : 0;
 
+    const brokerMap: Record<string, { count: number; value: number }> = {};
+    for (const c of active) {
+      const name = c.broker || 'Direta';
+      if (!brokerMap[name]) brokerMap[name] = { count: 0, value: 0 };
+      brokerMap[name].count += 1;
+      brokerMap[name].value += c.totalValue;
+    }
+    const salesByBroker = Object.entries(brokerMap)
+      .map(([broker, data]) => ({ broker, ...data }))
+      .sort((a, b) => b.value - a.value);
+
     return {
       totalContracts: active.length,
       totalValue,
@@ -32,6 +43,7 @@ export function useDashboardStats(contracts: Contract[]): DashboardStats {
       avgPricePerM2,
       contractsByYear,
       valueByYear,
+      salesByBroker,
       monthlyTrend: monthlyTrend(active),
     };
   }, [contracts]);
