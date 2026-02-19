@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useFilteredData } from '../../hooks/useFilteredData';
-import { clientsInANotB } from '../../utils/dataTransformers';
+import { brokersInANotB } from '../../utils/dataTransformers';
 import { formatCurrency, formatDate } from '../../utils/formatters';
 import { UserX } from 'lucide-react';
 import type { Contract } from '../../types';
@@ -11,8 +11,8 @@ export function ClientsNotReturningView() {
   // Use allContracts (without cancelled) for this analysis
   const active = useMemo(() => allContracts.filter(c => !c.cancelled), [allContracts]);
 
-  const in2023Not2024 = useMemo(() => clientsInANotB(active, 2023, 2024), [active]);
-  const in2024Not2025 = useMemo(() => clientsInANotB(active, 2024, 2025), [active]);
+  const in2023Not2024 = useMemo(() => brokersInANotB(active, 2023, 2024), [active]);
+  const in2024Not2025 = useMemo(() => brokersInANotB(active, 2024, 2025), [active]);
 
   return (
     <div className="space-y-6">
@@ -31,7 +31,7 @@ export function ClientsNotReturningView() {
 }
 
 function Section({ title, contracts }: { title: string; contracts: Contract[] }) {
-  const uniqueClients = [...new Set(contracts.map(c => c.clientId))].length;
+  const uniqueBrokers = [...new Set(contracts.map(c => (c.broker || 'Direta').toUpperCase().trim()))].length;
 
   return (
     <div className="bg-navy-800 rounded-xl border border-navy-600 overflow-hidden">
@@ -41,7 +41,7 @@ function Section({ title, contracts }: { title: string; contracts: Contract[] })
           <h3 className="text-sm font-semibold text-white">{title}</h3>
         </div>
         <span className="text-xs text-gray-400">
-          {uniqueClients} cliente{uniqueClients !== 1 ? 's' : ''}
+          {uniqueBrokers} imobiliária{uniqueBrokers !== 1 ? 's' : ''}
           {' | '}
           {contracts.length} contrato{contracts.length !== 1 ? 's' : ''}
         </span>

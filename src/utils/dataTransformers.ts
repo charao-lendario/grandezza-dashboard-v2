@@ -26,6 +26,24 @@ export function clientsInANotB(contracts: Contract[], yearA: number, yearB: numb
   return contracts.filter(c => c.year === yearA && notReturned.has(c.clientId));
 }
 
+function brokersByYear(contracts: Contract[]): Record<number, Set<string>> {
+  const byYear = groupByYear(contracts);
+  const result: Record<number, Set<string>> = {};
+  for (const [year, cs] of Object.entries(byYear)) {
+    result[Number(year)] = new Set(cs.map(c => (c.broker || 'Direta').toUpperCase().trim()));
+  }
+  return result;
+}
+
+export function brokersInANotB(contracts: Contract[], yearA: number, yearB: number): Contract[] {
+  const byYear = brokersByYear(contracts);
+  const brokersA = byYear[yearA] ?? new Set();
+  const brokersB = byYear[yearB] ?? new Set();
+  const notReturned = new Set([...brokersA].filter(b => !brokersB.has(b)));
+
+  return contracts.filter(c => c.year === yearA && notReturned.has((c.broker || 'Direta').toUpperCase().trim()));
+}
+
 function shortenBrokerName(name: string): string {
   if (!name) return 'Direta';
   // Take only the first word/name
